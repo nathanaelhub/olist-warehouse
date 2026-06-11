@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: raw
+    database: OLIST
+    schema: RAW
+    description: "Raw landing tables — exact CSV shape, untouched"
+    loader: "scripts/load_to_snowflake.py"
+
+    freshness:
+      warn_after: { count: 7, period: day }
+      error_after: { count: 14, period: day }
+
+    tables:
+      - name: customers
+        loaded_at_field: null   # static dataset; freshness disabled per-table where appropriate
+      - name: orders
+      - name: order_items
+      - name: order_payments
+      - name: order_reviews
+      - name: products
+      - name: sellers
+      - name: geolocation
+      - name: product_category_name_translation

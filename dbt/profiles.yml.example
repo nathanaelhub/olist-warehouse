@@ -1,0 +1,18 @@
+# Copy this file to ~/.dbt/profiles.yml (or set DBT_PROFILES_DIR=./dbt
+# and use it from here). Then edit account/user/password/role.
+
+olist:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: <your-trial-account>.snowflakecomputing.com   # without https://
+      user: <your-user>
+      authenticator: snowflake                                # change to externalbrowser for SSO
+      password: ""                                            # leave blank if using externalbrowser
+      role: WAREHOUSE_DEV
+      database: OLIST
+      warehouse: XFORM_WH
+      schema: stg                                             # default; mart models override
+      threads: 4
+      client_session_keep_alive: False

@@ -1,0 +1,121 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: "Conformed date dimension, role-played 3× on fact_orders."
+    columns:
+      - name: date_key
+        description: "Surrogate YYYYMMDD integer; PK."
+        tests:
+          - unique
+          - not_null
+      - name: date
+        tests:
+          - not_null
+
+  - name: dim_geography
+    description: "Conformed geography (one row per zip prefix), shared by customer + seller."
+    columns:
+      - name: geo_sk
+        tests:
+          - unique
+          - not_null
+      - name: zip_prefix
+        tests:
+          - not_null
+      - name: region
+        tests:
+          - accepted_values:
+              values: ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul']
+
+  - name: dim_customer
+    description: "SCD Type 2 — same customer_unique_id can have multiple rows across moves."
+    columns:
+      - name: customer_sk
+        tests:
+          - unique
+          - not_null
+      - name: customer_unique_id
+        tests:
+          - not_null
+      - name: is_current
+        tests:
+          - not_null
+
+  - name: dim_seller
+    description: "SCD1 seller dimension."
+    columns:
+      - name: seller_sk
+        tests:
+          - unique
+          - not_null
+      - name: seller_id
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_product
+    description: "SCD1 product dimension with English category + category_group rollup."
+    columns:
+      - name: product_sk
+        tests:
+          - unique
+          - not_null
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+      - name: category_group
+        tests:
+          - not_null
+
+  - name: dim_payment
+    description: "Composite payment dim, one row per (type, installments)."
+    columns:
+      - name: payment_sk
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_orders
+    description: "Order-line grain fact table. Clustered by purchase_date_key."
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+      - name: order_item_id
+        tests:
+          - not_null
+      - name: purchase_date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: customer_sk
+        tests:
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_sk
+      - name: seller_sk
+        tests:
+          - relationships:
+              to: ref('dim_seller')
+              field: seller_sk
+      - name: product_sk
+        tests:
+          - relationships:
+              to: ref('dim_product')
+              field: product_sk
+      - name: payment_sk
+        tests:
+          - relationships:
+              to: ref('dim_payment')
+              field: payment_sk
+      - name: review_score
+        tests:
+          - accepted_values:
+              values: [1, 2, 3, 4, 5]
+              quote: false
+              config:
+                where: "review_score is not null"

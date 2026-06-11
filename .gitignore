@@ -1,0 +1,22 @@
+# data — never commit the raw CSVs or any extracted aggregates
+data/
+*.csv
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# dbt
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+dbt/.user.yml
+
+# snowflake credentials — these stay in ~/.snowflake/config.toml only
+.snowflake/
+*.snowflake-profile
+
+# OS
+.DS_Store

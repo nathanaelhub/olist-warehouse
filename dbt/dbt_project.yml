@@ -1,0 +1,32 @@
+name: 'olist'
+version: '1.0.0'
+config-version: 2
+
+profile: 'olist'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  olist:
+    staging:
+      +schema: stg
+      +materialized: view
+    intermediate:
+      +schema: stg
+      +materialized: ephemeral
+    marts:
+      +schema: marts
+      +materialized: table
+
+seeds:
+  olist:
+    +schema: marts
