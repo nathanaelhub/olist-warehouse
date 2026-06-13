@@ -69,7 +69,11 @@ GRANT USAGE ON WAREHOUSE XFORM_WH   TO ROLE WAREHOUSE_DEV;
 GRANT USAGE ON WAREHOUSE ANALYST_WH TO ROLE WAREHOUSE_DEV;
 
 -- Grant the role to the user running this script.
-GRANT ROLE WAREHOUSE_DEV TO USER IDENTIFIER(CURRENT_USER());
+-- Note: GRANT ROLE does not accept IDENTIFIER(CURRENT_USER()); set the
+-- target user explicitly. Replace NATHANAELHUB with your username, or
+-- run separately: snow sql -q "GRANT ROLE WAREHOUSE_DEV TO USER <you>;"
+SET grantee = CURRENT_USER();
+GRANT ROLE WAREHOUSE_DEV TO USER IDENTIFIER($grantee);
 
 -- Useful queries that prove setup worked.
 SELECT 'setup complete' AS status,
