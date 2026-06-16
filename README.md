@@ -126,6 +126,15 @@ python scripts/snapshot_aggregates.py   # writes JSON exports the portfolio MDX 
 | Tests | dbt schema tests + a few custom | Catches schema regressions before charts break |
 | Presentation | Hand-coded SVG charts on the portfolio | Editorial design control, no third-party iframe |
 
+## Proof it ran
+
+Built and validated against a live Snowflake warehouse, not just authored:
+
+- **[`results/query_results.md`](results/query_results.md)** — the analyst queries' real output (Sudeste 65% of revenue; moderate seller retention; geographic late-delivery signal).
+- **[`results/dbt_run.log`](results/dbt_run.log)** — 15 models built: `dim_customer` 96,352 (SCD2) · `fact_orders` 112,650.
+- **[`results/dbt_test.log`](results/dbt_test.log)** — 31/31 tests passing.
+- **[`docs/lineage.md`](docs/lineage.md)** — the dbt DAG (mermaid, renders on GitHub).
+
 ## License
 
 MIT — the code is mine. The Olist dataset is published under [CC BY-NC-SA 4.0](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).

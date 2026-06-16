@@ -1,0 +1,17 @@
+17:45:57  2 of 15 OK created sql view model stg.stg_customers ............................ [SUCCESS 1 in 0.71s]
+17:45:57  4 of 15 OK created sql view model stg.stg_order_items .......................... [SUCCESS 1 in 0.72s]
+17:45:57  3 of 15 OK created sql view model stg.stg_geolocation .......................... [SUCCESS 1 in 0.79s]
+17:45:58  6 of 15 OK created sql view model stg.stg_payments ............................. [SUCCESS 1 in 0.37s]
+17:45:58  7 of 15 OK created sql view model stg.stg_products ............................. [SUCCESS 1 in 0.40s]
+17:45:58  5 of 15 OK created sql view model stg.stg_orders ............................... [SUCCESS 1 in 0.52s]
+17:45:58  1 of 15 OK created sql table model marts.dim_date .............................. [SUCCESS 1827 in 1.35s]
+17:45:58  8 of 15 OK created sql view model stg.stg_reviews .............................. [SUCCESS 1 in 0.33s]
+17:45:58  9 of 15 OK created sql view model stg.stg_sellers .............................. [SUCCESS 1 in 0.40s]
+17:45:59  11 of 15 OK created sql table model marts.dim_payment .......................... [SUCCESS 28 in 1.31s]
+17:46:00  10 of 15 OK created sql table model marts.dim_geography ........................ [SUCCESS 19015 in 1.69s]
+17:46:00  12 of 15 OK created sql table model marts.dim_product .......................... [SUCCESS 32951 in 2.24s]
+17:46:01  14 of 15 OK created sql table model marts.dim_seller ........................... [SUCCESS 3095 in 1.17s]
+17:46:01  13 of 15 OK created sql table model marts.dim_customer ......................... [SUCCESS 96352 in 2.27s]
+17:46:05  15 of 15 OK created sql table model marts.fact_orders .......................... [SUCCESS 1 in 4.68s]
+17:46:06  Completed successfully
+17:46:06  Done. PASS=15 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=15
