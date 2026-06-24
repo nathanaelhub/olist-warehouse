@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olist Warehouse.dc — presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { background:#f6f4ef; }
+  [data-slide] { transition: opacity .28s ease, transform .28s ease; }
+  @media (prefers-reduced-motion: reduce) { [data-slide] { transition: opacity .12s linear !important; transform:none !important; } }
+</style>
+</head>
+<body>
+
+
+<div style="min-height:100vh; width:100%; background:#f6f4ef; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:40px 24px; font-family:'Inter',sans-serif;">
+  <div id="dc-stage" style="position:relative; width:min(1120px, 94vw); aspect-ratio:16/9; background:#fbf9f4; border:1px solid #d9d4c7; border-radius:4px; box-shadow:0 18px 50px -28px rgba(28,27,24,0.35); overflow:hidden;">
+
+    <section data-slide data-label="Title" data-screen-label="01" style="position:absolute; inset:0; opacity:1; background:#e3ebf7; display:flex; flex-direction:column; justify-content:center; padding:6.4% 7%; z-index:2;">
+      <div style="font-family:'Geist Mono',monospace; font-size:0.78vw; letter-spacing:0.18em; text-transform:uppercase; color:#2a6fc4; font-weight:500;">Analytics Engineering · Case Study</div>
+      <h1 style="font-family:'Fraunces',serif; font-weight:400; color:#1c1b18; font-size:5.6vw; line-height:1.0; letter-spacing:-0.015em; margin:3.2% 0 2.4%;">Olist Warehouse</h1>
+      <p style="font-family:'Inter',sans-serif; color:#3d3a33; font-size:1.32vw; line-height:1.5; max-width:60%;">Modeling 100,000 Brazilian e-commerce orders into a Snowflake star schema — and the three questions it answers.</p>
+      <div style="font-family:'Geist Mono',monospace; font-size:0.84vw; letter-spacing:0.16em; text-transform:uppercase; color:#605b50; margin-top:4.2%;">SNOWFLAKE&nbsp;&nbsp;·&nbsp;&nbsp;DBT&nbsp;&nbsp;·&nbsp;&nbsp;STAR SCHEMA&nbsp;&nbsp;·&nbsp;&nbsp;KAGGLE OLIST</div>
+      <div style="display:flex; align-items:baseline; gap:10px; margin-top:2.2%; padding-top:2.2%; border-top:1px solid #d9d4c7;">
+        <span style="font-family:'Fraunces',serif; font-size:1.18vw; color:#1c1b18;">Nathanael Johnson</span>
+        <span style="font-family:'Geist Mono',monospace; font-size:0.74vw; letter-spacing:0.14em; text-transform:uppercase; color:#8a8478;">Analytics Engineer</span>
+      </div>
+    </section>
+    <section data-slide data-label="The question" data-screen-label="02" style="position:absolute; inset:0; opacity:0; display:flex; flex-direction:column; justify-content:center; padding:6.4% 7%;">
+      <div style="font-family:'Geist Mono',monospace; font-size:0.78vw; letter-spacing:0.18em; text-transform:uppercase; color:#2a6fc4; font-weight:500; margin-bottom:2.6%;">The question</div>
+      <p style="font-family:'Inter',sans-serif; color:#605b50; font-size:1.12vw; line-height:1.5; max-width:74%; margin-bottom:2.6%;">Olist — Brazil's largest department-store marketplace — released ~2 years of real transactions across 8 normalized tables. The raw tables can't answer a single strategic question on their own.</p>
+      <p style="font-family:'Fraunces',serif; font-weight:300; color:#1c1b18; font-size:2.5vw; line-height:1.22; letter-spacing:-0.01em; max-width:88%;">Where is the revenue actually coming from, are sellers staying, and is late delivery a <span style="font-style:italic; color:#2a6fc4;">logistics</span> problem or a <span style="font-style:italic; color:#2a6fc4;">geography</span> problem?</p>
+    </section>
+
+    <section data-slide data-label="The data" data-screen-label="03" style="position:absolute; inset:0; opacity:0; display:flex; flex-direction:column; justify-content:center; padding:5.6% 7%;">
+      <div style="font-family:'Geist Mono',monospace; font-size:0.78vw; letter-spacing:0.18em; text-transform:uppercase; color:#2a6fc4; font-weight:500;">The data</div>
+      <h2 style="font-family:'Fraunces',serif; font-weight:400; color:#1c1b18; font-size:2.5vw; line-height:1.05; letter-spacing:-0.01em; margin:1.2% 0 1%;">Eight normalized tables, ~2 years, loaded into Snowflake</h2>
+      <div style="font-family:'Inter',sans-serif; font-size:0.92vw; color:#8a8478; margin-bottom:2.8%;">Source: Olist Brazilian E-Commerce — public on Kaggle, real and multi-table</div>
+      <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:2% 3%;">
+        <div style="border-top:1.5px solid #d9d4c7; padding-top:1.2%;"><div style="font-family:'Fraunces',serif; font-size:1.9vw; color:#1c1b18; line-height:1;">99,441</div><div style="font-family:'Geist Mono',monospace; font-size:0.7vw; letter-spacing:0.1em; color:#605b50; margin-top:0.4em;">customers</div></div>
+        <div style="border-top:1.5px solid #d9d4c7; padding-top:1.2%;"><div style="font-family:'Fraunces',serif; font-size:1.9vw; color:#1c1b18; line-height:1;">99,441</div><div style="font-family:'Geist Mono',monospace; font-size:0.7vw; letter-spacing:0.1em; color:#605b50; margin-top:0.4em;">orders</div></div>
+        <div style="border-top:1.5px solid #2a6fc4; padding-top:1.2%;"><div style="font-family:'Fraunces',serif; font-size:1.9vw; color:#2a6fc4; line-height:1;">112,650</div><div style="font-family:'Geist Mono',monospace; font-size:0.7vw; letter-spacing:0.1em; color:#605b50; margin-top:0.4em;">order_items</div></div>
+        <div style="border-top:1.5px solid #d9d4c7; padding-top:1.2%;"><div style="font-family:'Fraunces',serif; font-size:1.9vw; color:#1c1b18; line-height:1;">103,886</div><div style="font-family:'Geist Mono',monospace; font-size:0.7vw; letter-spacing:0.1em; color:#605b50; margin-top:0.4em;">order_payments</div></div>
+        <div style="border-top:1.5px solid #d9d4c7; padding-top:1.2%;"><div style="font-family:'Fraunces',serif; font-size:1.9vw; color:#1c1b18; line-height:1;">99,224</div><div style="font-family:'Geist Mono',monospace; font-size:0.7vw; letter-spacing:0.1em; color:#605b50; margin-top:0.4em;">order_reviews</div></div>
+        <div style="border-top:1.5px solid #d9d4c7; padding-top:1.2%;"><div style="font-family:'Fraunces',serif; font-size:1.9vw; color:#1c1b18; line-height:1;">32,951</div><div style="font-family:'Geist Mono',monospace; font-size:0.7vw; letter-spacing:0.1em; color:#605b50; margin-top:0.4em;">products</div></div>
+        <div style="border-top:1.5px solid #d9d4c7; padding-top:1.2%;"><div style="font-family:'Fraunces',serif; font-size:1.9vw; color:#1c1b18; line-height:1;">3,095</div><div style="font-family:'Geist Mono',monospace; font-size:0.7vw; letter-spacing:0.1em; color:#605b50; margin-top:0.4em;">sellers</div></div>
+        <div style="border-top:1.5px solid #d9d4c7; padding-top:1.2%;"><div style="font-family:'Fraunces',serif; font-size:1.9vw; color:#1c1b18; line-height:1;">1,000,163</div><div style="font-family:'Geist Mono',monospace; font-size:0.7vw; letter-spacing:0.1em; color:#605b50; margin-top:0.4em;">geolocation</div></div>
+      </div>
+    </section>
+    <section data-slide data-label="The model" data-screen-label="04" style="position:absolute; inset:0; opacity:0; display:flex; flex-direction:column; justify-content:center; padding:4.6% 7%;">
+      <div style="font-family:'Geist Mono',monospace; font-size:0.78vw; letter-spacing:0.18em; text-transform:uppercase; color:#2a6fc4; font-weight:500;">The model</div>
+      <h2 style="font-family:'Fraunces',serif; font-weight:400; color:#1c1b18; font-size:2.4vw; line-height:1.05; letter-spacing:-0.01em; margin:1% 0 1.6%;">A single-fact Kimball star</h2>
+      <div style="display:grid; grid-template-columns:1.7fr 1fr; gap:3%; align-items:center;">
+        <svg viewBox="0 0 1000 460" style="width:100%; height:auto;" font-family="'Geist Mono', monospace">
+          <g stroke="#c7c0b0" stroke-width="1.5">
+            <line x1="500" y1="248" x2="180" y2="66"></line>
+            <line x1="500" y1="248" x2="505" y2="54"></line>
+            <line x1="500" y1="248" x2="820" y2="66"></line>
+            <line x1="500" y1="248" x2="180" y2="396"></line>
+            <line x1="500" y1="248" x2="505" y2="408"></line>
+            <line x1="500" y1="248" x2="820" y2="396"></line>
+          </g>
+          <!-- fact -->
+          <g>
+            <rect x="392" y="200" width="216" height="98" rx="6" fill="#2a6fc4" fill-opacity="0.08" stroke="#2a6fc4" stroke-width="2"></rect>
+            <text x="500" y="232" text-anchor="middle" font-size="17" fill="#1c1b18" font-weight="500">fact_orders</text>
+            <text x="500" y="254" text-anchor="middle" font-size="12.5" fill="#605b50">grain: order × line item</text>
+            <text x="500" y="276" text-anchor="middle" font-size="13" fill="#2a6fc4" font-weight="500">112,650 rows · 98,666 orders</text>
+          </g>
+          <!-- dims -->
+          <g>
+            <rect x="80" y="32" width="200" height="64" rx="6" fill="#ffffff" stroke="#c7c0b0" stroke-width="1.5"></rect>
+            <text x="180" y="60" text-anchor="middle" font-size="14.5" fill="#3d3a33" font-weight="500">dim_date</text>
+            <text x="180" y="80" text-anchor="middle" font-size="11.5" fill="#8a8478">1,827 · role-played 3×</text>
+
+            <rect x="400" y="20" width="210" height="64" rx="6" fill="#ffffff" stroke="#2a6fc4" stroke-width="1.5"></rect>
+            <text x="505" y="48" text-anchor="middle" font-size="14.5" fill="#2a6fc4" font-weight="500">dim_customer</text>
+            <text x="505" y="68" text-anchor="middle" font-size="11.5" fill="#605b50">96,352 · SCD Type 2</text>
+
+            <rect x="720" y="32" width="200" height="64" rx="6" fill="#ffffff" stroke="#c7c0b0" stroke-width="1.5"></rect>
+            <text x="820" y="60" text-anchor="middle" font-size="14.5" fill="#3d3a33" font-weight="500">dim_seller</text>
+            <text x="820" y="80" text-anchor="middle" font-size="11.5" fill="#8a8478">3,095</text>
+
+            <rect x="80" y="364" width="200" height="64" rx="6" fill="#ffffff" stroke="#c7c0b0" stroke-width="1.5"></rect>
+            <text x="180" y="392" text-anchor="middle" font-size="14.5" fill="#3d3a33" font-weight="500">dim_product</text>
+            <text x="180" y="412" text-anchor="middle" font-size="11.5" fill="#8a8478">32,951 · +category_group</text>
+
+            <rect x="400" y="376" width="210" height="64" rx="6" fill="#ffffff" stroke="#2a6fc4" stroke-width="1.5"></rect>
+            <text x="505" y="404" text-anchor="middle" font-size="14.5" fill="#2a6fc4" font-weight="500">dim_geography</text>
+            <text x="505" y="424" text-anchor="middle" font-size="11.5" fill="#605b50">19,015 · conformed</text>
+
+            <rect x="720" y="364" width="200" height="64" rx="6" fill="#ffffff" stroke="#c7c0b0" stroke-width="1.5"></rect>
+            <text x="820" y="392" text-anchor="middle" font-size="14.5" fill="#3d3a33" font-weight="500">dim_payment</text>
+            <text x="820" y="412" text-anchor="middle" font-size="11.5" fill="#8a8478">28</text>
+          </g>
+        </svg>
+        <div>
+          <p style="font-family:'Inter',sans-serif; font-size:1.04vw; color:#3d3a33; line-height:1.55;">The grain is <strong style="color:#1c1b18;">line item, not order</strong> — so revenue stays additive and the per-seller story survives.</p>
+          <p style="font-family:'Inter',sans-serif; font-size:1.04vw; color:#605b50; line-height:1.55; margin-top:1.4em;"><span style="font-family:'Geist Mono',monospace; font-size:0.9vw; color:#2a6fc4;">dim_customer</span> is SCD Type 2, keyed on customer_unique_id because people relocate between orders. <span style="font-family:'Geist Mono',monospace; font-size:0.9vw; color:#2a6fc4;">dim_geography</span> is conformed across customer and seller.</p>
+        </div>
+      </div>
+    </section>
+    <section data-slide data-label="Finding 01" data-screen-label="05" style="position:absolute; inset:0; opacity:0; display:flex; flex-direction:column; justify-content:center; padding:5% 7%;">
+      <div style="font-family:'Geist Mono',monospace; font-size:0.78vw; letter-spacing:0.18em; text-transform:uppercase; color:#2a6fc4; font-weight:500;">Finding 01</div>
+      <h2 style="font-family:'Fraunces',serif; font-weight:400; color:#1c1b18; font-size:2.7vw; line-height:1.04; letter-spacing:-0.01em; margin:1% 0 0.4%;">Revenue is wildly concentrated</h2>
+      <div style="font-family:'Inter',sans-serif; font-size:0.9vw; color:#8a8478; margin-bottom:2%;">gross revenue by region · R$15.8M total across 98,666 orders</div>
+      <svg viewBox="0 0 1000 300" style="width:100%; height:auto;" font-family="'Geist Mono', monospace">
+        <g text-anchor="end">
+          <text x="195" y="28" font-size="14.5" fill="#1c1b18" font-weight="500">Sudeste</text>
+          <text x="195" y="45" font-size="11" fill="#8a8478">R$10,226,484</text>
+          <text x="195" y="84" font-size="14.5" fill="#1c1b18" font-weight="500">Sul</text>
+          <text x="195" y="101" font-size="11" fill="#8a8478">R$2,295,786</text>
+          <text x="195" y="140" font-size="14.5" fill="#1c1b18" font-weight="500">Nordeste</text>
+          <text x="195" y="157" font-size="11" fill="#8a8478">R$1,874,175</text>
+          <text x="195" y="196" font-size="14.5" fill="#1c1b18" font-weight="500">Centro-Oeste</text>
+          <text x="195" y="213" font-size="11" fill="#8a8478">R$993,279</text>
+          <text x="195" y="252" font-size="14.5" fill="#1c1b18" font-weight="500">Norte</text>
+          <text x="195" y="269" font-size="11" fill="#8a8478">R$409,309</text>
+        </g>
+        <g fill="#2a6fc4">
+          <rect x="210" y="16" width="690" height="30" rx="2"></rect>
+          <rect x="210" y="72" width="155" height="30" rx="2"></rect>
+          <rect x="210" y="128" width="126" height="30" rx="2"></rect>
+          <rect x="210" y="184" width="67" height="30" rx="2"></rect>
+          <rect x="210" y="240" width="28" height="30" rx="2"></rect>
+        </g>
+        <g font-size="14" font-weight="500">
+          <text x="884" y="36" text-anchor="end" fill="#ffffff">65%</text>
+          <text x="377" y="92" fill="#2a6fc4">14.5%</text>
+          <text x="348" y="148" fill="#2a6fc4">11.9%</text>
+          <text x="289" y="204" fill="#2a6fc4">6.3%</text>
+          <text x="250" y="260" fill="#2a6fc4">2.6%</text>
+        </g>
+      </svg>
+      <p style="font-family:'Inter',sans-serif; font-size:1.0vw; color:#3d3a33; line-height:1.5; margin-top:2.4%; max-width:88%;"><strong style="color:#1c1b18;">65% comes from one region</strong> — the São Paulo–Rio–Minas axis. The Norte, geographically the largest, is 2.6%. Even regional effort allocation spends four-fifths of effort on one-fifth of opportunity.</p>
+    </section>
+    <section data-slide data-label="Finding 02" data-screen-label="06" style="position:absolute; inset:0; opacity:0; display:flex; flex-direction:column; justify-content:center; padding:4.6% 7%;">
+      <div style="font-family:'Geist Mono',monospace; font-size:0.78vw; letter-spacing:0.18em; text-transform:uppercase; color:#2a6fc4; font-weight:500;">Finding 02</div>
+      <h2 style="font-family:'Fraunces',serif; font-weight:400; color:#1c1b18; font-size:2.5vw; line-height:1.04; letter-spacing:-0.01em; margin:1% 0 0.3%;">Seller retention is moderate, not a cliff</h2>
+      <div style="font-family:'Inter',sans-serif; font-size:0.88vw; color:#8a8478; margin-bottom:1.8%;">% of each cohort still selling · rows = cohort month · columns = months since first sale</div>
+      <div style="display:grid; grid-template-columns:118px repeat(6, 1fr); gap:5px; align-items:stretch;">
+        <div></div>
+        <div style="font-family:'Geist Mono',monospace; font-size:0.72vw; letter-spacing:0.1em; color:#8a8478; text-align:center; align-self:end; padding-bottom:5px;">M1</div>
+        <div style="font-family:'Geist Mono',monospace; font-size:0.72vw; letter-spacing:0.1em; color:#8a8478; text-align:center; align-self:end; padding-bottom:5px;">M2</div>
+        <div style="font-family:'Geist Mono',monospace; font-size:0.72vw; letter-spacing:0.1em; color:#8a8478; text-align:center; align-self:end; padding-bottom:5px;">M3</div>
+        <div style="font-family:'Geist Mono',monospace; font-size:0.72vw; letter-spacing:0.1em; color:#8a8478; text-align:center; align-self:end; padding-bottom:5px;">M4</div>
+        <div style="font-family:'Geist Mono',monospace; font-size:0.72vw; letter-spacing:0.1em; color:#8a8478; text-align:center; align-self:end; padding-bottom:5px;">M6</div>
+        <div style="font-family:'Geist Mono',monospace; font-size:0.72vw; letter-spacing:0.1em; color:#8a8478; text-align:center; align-self:end; padding-bottom:5px;">M8</div>
+
+        <div style="font-family:'Geist Mono',monospace; font-size:0.8vw; color:#3d3a33; font-weight:500; text-align:right; padding-right:12px; align-self:center;">2017-Jan</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.90); color:#fff;">71</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.88); color:#fff;">70</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.64); color:#fff;">60</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.74); color:#fff;">64</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.41); color:#1c1b18;">50</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.41); color:#1c1b18;">50</div>
+
+        <div style="font-family:'Geist Mono',monospace; font-size:0.8vw; color:#3d3a33; font-weight:500; text-align:right; padding-right:12px; align-self:center;">2017-Apr</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.50); color:#1c1b18;">54</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.34); color:#1c1b18;">47</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.41); color:#1c1b18;">50</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.38); color:#1c1b18;">49</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.12); color:#1c1b18;">38</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.12); color:#1c1b18;">38</div>
+
+        <div style="font-family:'Geist Mono',monospace; font-size:0.8vw; color:#3d3a33; font-weight:500; text-align:right; padding-right:12px; align-self:center;">2017-Jul</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.83); color:#fff;">68</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.69); color:#fff;">62</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.67); color:#fff;">61</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.83); color:#fff;">68</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.57); color:#fff;">57</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.45); color:#1c1b18;">52</div>
+
+        <div style="font-family:'Geist Mono',monospace; font-size:0.8vw; color:#3d3a33; font-weight:500; text-align:right; padding-right:12px; align-self:center;">2017-Oct</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.78); color:#fff;">66</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.52); color:#fff;">55</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.55); color:#fff;">56</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.36); color:#1c1b18;">48</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.36); color:#1c1b18;">48</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.10); color:#1c1b18;">37</div>
+
+        <div style="font-family:'Geist Mono',monospace; font-size:0.8vw; color:#3d3a33; font-weight:500; text-align:right; padding-right:12px; align-self:center;">2018-Jan</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.57); color:#fff;">57</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.41); color:#1c1b18;">50</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.57); color:#fff;">57</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.29); color:#1c1b18;">45</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.17); color:#1c1b18;">40</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(0,0,0,0.03); color:#bdb8ac;">—</div>
+
+        <div style="font-family:'Geist Mono',monospace; font-size:0.8vw; color:#3d3a33; font-weight:500; text-align:right; padding-right:12px; align-self:center;">2018-Apr</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.64); color:#fff;">60</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.45); color:#1c1b18;">52</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.48); color:#1c1b18;">53</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(42,111,196,0.36); color:#1c1b18;">48</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(0,0,0,0.03); color:#bdb8ac;">—</div>
+        <div style="padding:0.85vw 0; text-align:center; font-family:'Geist Mono',monospace; font-size:0.95vw; border-radius:2px; background:rgba(0,0,0,0.03); color:#bdb8ac;">—</div>
+      </div>
+      <p style="font-family:'Inter',sans-serif; font-size:0.96vw; color:#3d3a33; line-height:1.5; margin-top:2.4%; max-width:92%;">I expected a churn cliff; the data pushed back. <strong style="color:#1c1b18;">~50% of every cohort is still active at month 6.</strong> The risk isn't collapse — it's the steady ~40% who drift off in the first quarter, which acquisition has to keep refilling.</p>
+    </section>
+    <section data-slide data-label="Finding 03" data-screen-label="07" style="position:absolute; inset:0; opacity:0; display:flex; flex-direction:column; justify-content:center; padding:5% 7%;">
+      <div style="font-family:'Geist Mono',monospace; font-size:0.78vw; letter-spacing:0.18em; text-transform:uppercase; color:#2a6fc4; font-weight:500;">Finding 03</div>
+      <h2 style="font-family:'Fraunces',serif; font-weight:400; color:#1c1b18; font-size:2.5vw; line-height:1.04; letter-spacing:-0.01em; margin:1% 0 0.3%;">Late delivery is geographic, not categorical</h2>
+      <div style="display:flex; align-items:center; gap:22px; margin-bottom:1.2%;">
+        <div style="font-family:'Inter',sans-serif; font-size:0.88vw; color:#8a8478;">% of orders delivered late, by category group</div>
+        <div style="display:flex; align-items:center; gap:7px;"><span style="width:12px; height:12px; background:#2a6fc4; border-radius:2px; display:inline-block;"></span><span style="font-family:'Geist Mono',monospace; font-size:0.74vw; color:#605b50;">Sudeste</span></div>
+        <div style="display:flex; align-items:center; gap:7px;"><span style="width:12px; height:12px; background:#c9d6ea; border-radius:2px; display:inline-block;"></span><span style="font-family:'Geist Mono',monospace; font-size:0.74vw; color:#605b50;">Rest of Brazil</span></div>
+      </div>
+      <svg viewBox="0 0 1000 380" style="width:100%; height:auto;" font-family="'Geist Mono', monospace">
+        <!-- gridlines + y labels -->
+        <g stroke="#ece8df" stroke-width="1">
+          <line x1="80" y1="320" x2="960" y2="320"></line>
+          <line x1="80" y1="227" x2="960" y2="227"></line>
+          <line x1="80" y1="133" x2="960" y2="133"></line>
+          <line x1="80" y1="40" x2="960" y2="40"></line>
+        </g>
+        <g font-size="11.5" fill="#8a8478" text-anchor="end">
+          <text x="68" y="324">0</text>
+          <text x="68" y="231">4%</text>
+          <text x="68" y="137">8%</text>
+          <text x="68" y="44">12%</text>
+        </g>
+        <!-- bars: Sudeste (accent) + Rest (light) -->
+        <g>
+          <rect x="138" y="147" width="36" height="173" fill="#2a6fc4" rx="2"></rect>
+          <rect x="186" y="61" width="36" height="259" fill="#c9d6ea" rx="2"></rect>
+          <rect x="278" y="143" width="36" height="177" fill="#2a6fc4" rx="2"></rect>
+          <rect x="326" y="91" width="36" height="229" fill="#c9d6ea" rx="2"></rect>
+          <rect x="418" y="152" width="36" height="168" fill="#2a6fc4" rx="2"></rect>
+          <rect x="466" y="98" width="36" height="222" fill="#c9d6ea" rx="2"></rect>
+          <rect x="558" y="196" width="36" height="124" fill="#2a6fc4" rx="2"></rect>
+          <rect x="606" y="108" width="36" height="212" fill="#c9d6ea" rx="2"></rect>
+          <rect x="698" y="140" width="36" height="180" fill="#2a6fc4" rx="2"></rect>
+          <rect x="746" y="115" width="36" height="205" fill="#c9d6ea" rx="2"></rect>
+          <rect x="838" y="154" width="36" height="166" fill="#2a6fc4" rx="2"></rect>
+          <rect x="886" y="131" width="36" height="189" fill="#c9d6ea" rx="2"></rect>
+        </g>
+        <!-- value labels -->
+        <g font-size="11" text-anchor="middle">
+          <text x="156" y="140" fill="#2a6fc4">7.4</text><text x="204" y="54" fill="#5b7fb0">11.1</text>
+          <text x="296" y="136" fill="#2a6fc4">7.6</text><text x="344" y="84" fill="#5b7fb0">9.8</text>
+          <text x="436" y="145" fill="#2a6fc4">7.2</text><text x="484" y="91" fill="#5b7fb0">9.5</text>
+          <text x="576" y="189" fill="#2a6fc4">5.3</text><text x="624" y="101" fill="#5b7fb0">9.1</text>
+          <text x="716" y="133" fill="#2a6fc4">7.7</text><text x="764" y="108" fill="#5b7fb0">8.8</text>
+          <text x="856" y="147" fill="#2a6fc4">7.1</text><text x="904" y="124" fill="#5b7fb0">8.1</text>
+        </g>
+        <!-- x labels -->
+        <g font-size="11.5" fill="#3d3a33" text-anchor="middle">
+          <text x="180" y="342">health &amp; beauty</text>
+          <text x="320" y="342">electronics</text>
+          <text x="460" y="342">home &amp; garden</text>
+          <text x="600" y="342">fashion</text>
+          <text x="740" y="342">industrial</text>
+          <text x="880" y="342">sports</text>
+        </g>
+      </svg>
+      <p style="font-family:'Inter',sans-serif; font-size:0.96vw; color:#3d3a33; line-height:1.5; margin-top:1.6%; max-width:92%;">Inside Sudeste it's ~7% regardless of category; outside it climbs 1.3–1.7×, widest for fashion. The lever is the <strong style="color:#1c1b18;">freight network by region</strong>, not supplier SLAs by product — and the same <span style="font-family:'Geist Mono',monospace; font-size:0.86vw; color:#2a6fc4;">dim_geography</span> from Finding 01 surfaces it in one join.</p>
+    </section>
+    <section data-slide data-label="So what" data-screen-label="08" style="position:absolute; inset:0; opacity:0; display:flex; flex-direction:column; justify-content:center; padding:6.4% 7%;">
+      <div style="font-family:'Geist Mono',monospace; font-size:0.78vw; letter-spacing:0.18em; text-transform:uppercase; color:#2a6fc4; font-weight:500; margin-bottom:2.6%;">So what</div>
+      <p style="font-family:'Fraunces',serif; font-weight:300; color:#1c1b18; font-size:2.6vw; line-height:1.18; letter-spacing:-0.01em; max-width:88%;">One conformed dimension answered <span style="font-style:italic; color:#2a6fc4;">two</span> of the three questions.</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:3.5%; margin-top:4%;">
+        <div style="border-top:2px solid #2a6fc4; padding-top:1.4%;"><div style="font-family:'Geist Mono',monospace; font-size:0.7vw; letter-spacing:0.12em; text-transform:uppercase; color:#8a8478; margin-bottom:0.6em;">Revenue</div><p style="font-family:'Inter',sans-serif; font-size:0.92vw; color:#3d3a33; line-height:1.5;">65% is one region. Effort allocation should say so out loud, not spread evenly.</p></div>
+        <div style="border-top:2px solid #2a6fc4; padding-top:1.4%;"><div style="font-family:'Geist Mono',monospace; font-size:0.7vw; letter-spacing:0.12em; text-transform:uppercase; color:#8a8478; margin-bottom:0.6em;">Retention</div><p style="font-family:'Inter',sans-serif; font-size:0.92vw; color:#3d3a33; line-height:1.5;">No cliff — I was wrong about that. The job is refilling first-quarter drift, not stopping collapse.</p></div>
+        <div style="border-top:2px solid #2a6fc4; padding-top:1.4%;"><div style="font-family:'Geist Mono',monospace; font-size:0.7vw; letter-spacing:0.12em; text-transform:uppercase; color:#8a8478; margin-bottom:0.6em;">Delivery</div><p style="font-family:'Inter',sans-serif; font-size:0.92vw; color:#3d3a33; line-height:1.5;">Fix the freight network outside Sudeste — it's geography, not product SLAs.</p></div>
+      </div>
+    </section>
+
+    <section data-slide data-label="How it was built" data-screen-label="09" style="position:absolute; inset:0; opacity:0; display:flex; flex-direction:column; justify-content:center; padding:5.4% 7%;">
+      <div style="font-family:'Geist Mono',monospace; font-size:0.78vw; letter-spacing:0.18em; text-transform:uppercase; color:#2a6fc4; font-weight:500;">How it was built</div>
+      <h2 style="font-family:'Fraunces',serif; font-weight:400; color:#1c1b18; font-size:2.4vw; line-height:1.04; letter-spacing:-0.01em; margin:1% 0 3%;">A clustered, fully-tested Kimball build</h2>
+      <div style="display:flex; align-items:center; gap:0; font-family:'Geist Mono',monospace; font-size:0.82vw; color:#3d3a33; margin-bottom:3.4%;">
+        <div style="flex:1; padding:1.2% 1%; border-top:2px solid #2a6fc4;">Kaggle CSVs</div>
+        <div style="align-self:center; color:#8a8478; padding:0 0.6%;">→</div>
+        <div style="flex:1; padding:1.2% 1%; border-top:2px solid #2a6fc4;">Snowflake RAW<br><span style="color:#8a8478; font-size:0.7vw;">PUT + COPY</span></div>
+        <div style="align-self:center; color:#8a8478; padding:0 0.6%;">→</div>
+        <div style="flex:1; padding:1.2% 1%; border-top:2px solid #2a6fc4;">dbt staging views</div>
+        <div style="align-self:center; color:#8a8478; padding:0 0.6%;">→</div>
+        <div style="flex:1; padding:1.2% 1%; border-top:2px solid #2a6fc4;">dbt marts</div>
+      </div>
+      <div style="display:grid; grid-template-columns:auto auto 1fr; gap:6%; align-items:start;">
+        <div>
+          <div style="font-family:'Fraunces',serif; font-size:2.2vw; color:#1c1b18; line-height:1;">15</div>
+          <div style="font-family:'Geist Mono',monospace; font-size:0.68vw; letter-spacing:0.12em; text-transform:uppercase; color:#8a8478;">dbt models</div>
+        </div>
+        <div>
+          <div style="font-family:'Fraunces',serif; font-size:2.2vw; color:#2a6fc4; line-height:1;">31 / 31</div>
+          <div style="font-family:'Geist Mono',monospace; font-size:0.68vw; letter-spacing:0.12em; text-transform:uppercase; color:#8a8478;">tests passing</div>
+        </div>
+        <p style="font-family:'Inter',sans-serif; font-size:0.98vw; color:#3d3a33; line-height:1.55;">unique · not_null · relationships · accepted_values. <span style="font-family:'Geist Mono',monospace; font-size:0.86vw; color:#2a6fc4;">fact_orders</span> is clustered on <span style="font-family:'Geist Mono',monospace; font-size:0.86vw; color:#2a6fc4;">purchase_date_key</span> — every dashboard filters by date first. The retention cohorts use <span style="font-family:'Geist Mono',monospace; font-size:0.86vw; color:#2a6fc4;">LAG()</span> windows over a cohort × period cross-join — no triangular subquery.</p>
+      </div>
+    </section>
+
+    <section data-slide data-label="Close" data-screen-label="10" style="position:absolute; inset:0; opacity:0; background:#e3ebf7; display:flex; flex-direction:column; justify-content:center; padding:6.4% 7%;">
+      <p style="font-family:'Fraunces',serif; font-weight:300; color:#1c1b18; font-size:3vw; line-height:1.15; letter-spacing:-0.015em; max-width:82%;">Eight flat tables in. Three <span style="font-style:italic; color:#2a6fc4;">decisions</span> out.</p>
+      <div style="display:flex; flex-direction:column; gap:0.7em; margin-top:5%; font-family:'Geist Mono',monospace; font-size:0.92vw; color:#605b50;">
+        <div><span style="color:#8a8478; display:inline-block; width:9ch; letter-spacing:0.12em; text-transform:uppercase; font-size:0.74vw;">Repo</span> github.com/nathanaelhub/olist-warehouse</div>
+        <div><span style="color:#8a8478; display:inline-block; width:9ch; letter-spacing:0.12em; text-transform:uppercase; font-size:0.74vw;">Work</span> nathanaeljohnson.net/work/olist-warehouse</div>
+      </div>
+      <div style="margin-top:4%; padding-top:2.4%; border-top:1px solid #d9d4c7; display:flex; align-items:baseline; gap:12px;">
+        <span style="font-family:'Fraunces',serif; font-size:1.3vw; color:#1c1b18;">Nathanael Johnson</span>
+        <span style="font-family:'Geist Mono',monospace; font-size:0.74vw; letter-spacing:0.14em; text-transform:uppercase; color:#8a8478;">Analytics Engineer</span>
+      </div>
+    </section>
+    
+
+  </div>
+
+  <div style="width:min(1120px, 94vw); display:flex; align-items:center; gap:16px;">
+    <div onclick="window.__deckPrev()" style="cursor:pointer; font-family:'Geist Mono',monospace; font-size:18px; color:#605b50; padding:4px 8px; user-select:none;">‹</div>
+    <div style="flex:1; height:2px; background:#d9d4c7; border-radius:2px; overflow:hidden;">
+      <div id="dc-progress" style="height:100%; width:0%; background:#2a6fc4; transition:width .28s ease;"></div>
+    </div>
+    <div style="font-family:'Geist Mono',monospace; font-size:12px; letter-spacing:0.14em; color:#605b50; min-width:62px; text-align:center;"><span id="dc-counter">01 / 01</span></div>
+    <div onclick="window.__deckNext()" style="cursor:pointer; font-family:'Geist Mono',monospace; font-size:18px; color:#605b50; padding:4px 8px; user-select:none;">›</div>
+  </div>
+</div>
+
+
+<script>
+(function () {
+  var slides = [].slice.call(document.querySelectorAll('[data-slide]'));
+  var total = slides.length, i = 0;
+  var counter = document.getElementById('dc-counter');
+  var progress = document.getElementById('dc-progress');
+  function pad(n){ return (n<10?'0':'') + n; }
+  function show(n, silent) {
+    i = Math.max(0, Math.min(total - 1, n));
+    slides.forEach(function (s, idx) {
+      var on = idx === i;
+      s.style.opacity = on ? '1' : '0';
+      s.style.zIndex = on ? '2' : '1';
+      s.style.pointerEvents = on ? 'auto' : 'none';
+    });
+    if (counter) counter.textContent = pad(i + 1) + ' / ' + pad(total);
+    if (progress) progress.style.width = (total > 1 ? (i / (total - 1)) * 100 : 100) + '%';
+    if (!silent) history.replaceState(null, '', '#slide-' + (i + 1));
+  }
+  window.__deckNext = function () { show(i + 1); };
+  window.__deckPrev = function () { show(i - 1); };
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(i + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(total - 1); }
+  });
+  window.addEventListener('hashchange', function () {
+    var m = /#slide-(\d+)/.exec(location.hash);
+    if (m) show(parseInt(m[1], 10) - 1, true);
+  });
+  var m = /#slide-(\d+)/.exec(location.hash);
+  show(m ? parseInt(m[1], 10) - 1 : 0, true);
+})();
+</script>
+
+</body>
+</html>
