@@ -2,6 +2,8 @@
 
 An end-to-end analytics engineering case study on the public Olist Brazilian E-Commerce dataset. Raw CSVs land in Snowflake, get modeled into a Kimball-style star schema via dbt, and the resulting facts and dimensions back a narrative dashboard on [nathanaeljohnson.net/work/olist-warehouse](https://nathanaeljohnson.net/work/olist-warehouse).
 
+**▶ [Walk through the 10-slide deck](https://nathanaelhub.github.io/olist-warehouse/)** — the analytics story in presentation form.
+
 The dataset is real: ~100,000 orders across 8 normalized OLTP tables published by Olist (the largest department-store marketplace in Brazil) in 2018, covering ~2 years of transactions. It's the kind of data shape a real e-commerce analytics team starts from — multi-table, partially denormalized, with timestamps that need standardising and free-text columns that need parsing.
 
 ## What this proves
